@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Overdrive Libraries Search</title>
+  <style>
+    body {
+      text-align: center;
+    }
+    form {
+      margin: 0 auto;
+      width: 50%;
+    }
+    textarea {
+      width: 100%;
+      height: 200px;
+    }
+    label {
+      display: block;
+      margin-top: 20px;
+    }
+    button {
+      margin-top: 20px;
+    }
+    #divLinks {
+      margin-top: 20px;
+    }
+#postfix {
+  width: 300px;
+  height: 50px;
+}
+  </style>
+</head>
+<body>
+  <h1>OVERDRIVE Libraries Search by SZ @ X3EM</h1>
+  <form>
+    <textarea id="links" name="links">
+https://lacountylibrary.overdrive.com
+https://lapl.overdrive.com
+https://sfpl.overdrive.com
+https://lbpl.overdrive.com
+https://ncdl.overdrive.com
+https://sanjose.overdrive.com
+https://santaclara.overdrive.com
+https://pasadena.overdrive.com
+https://oakland.overdrive.com
+https://ylpl.overdrive.com
+https://fairfax.overdrive.com
+https://lcpl.overdrive.com
+https://arlington.overdrive.com
+https://dclibrary.overdrive.com
+https://scdl.overdrive.com
+https://ocpl.overdrive.com</textarea>
+    <br>
+    <label for="postfix">Copy ONLY Book's URL ending with "/media/xyz here:</label><br>
+    <input type="text" id="postfix" name="postfix" value="/media/2527672">
+    <br>
+<button type="button" onclick="generateLinks()" style="font-size: 2em;">Generate</button>
+<button type="button" id="openAllButton" onclick="openAllLinks()" style="font-size: 2em;" disabled>Open All</button>
+  </form>
+  <div id="divLinks"></div>
+  <script>
+function generateLinks() {
+  var links = document.getElementById("links").value.split("\n");
+  var postfix = document.getElementById("postfix").value;
+  var divLinks = document.getElementById("divLinks");
+  divLinks.innerHTML = "";
+  for (var ndx = 0; ndx < links.length; ndx++) {
+    var link = document.createElement("a");
+    link.href = links[ndx] + postfix;
+    link.textContent = links[ndx] + postfix;
+    link.target = "_blank";
+    divLinks.appendChild(link);
+    divLinks.appendChild(document.createElement("br"));
+    divLinks.appendChild(document.createElement("br"));
+  }
+  document.getElementById("openAllButton").disabled = false;
+}
+
+function openAllLinks() {
+  var links = document.getElementsByTagName("a");
+  for (var ndx = 0; ndx < links.length; ndx++) {
+    (function(ndx) {
+      setTimeout(function() {
+        window.open(links[ndx].href);
+      }, Math.floor(Math.random() * 1000) + 500);
+    })(ndx);
+  }
+}
+// Save data to local storage
+function saveToLocalStorage() {
+  var links = document.getElementById("links").value;
+  localStorage.setItem("links", links);
+}
+
+// Read data from local storage
+function readFromLocalStorage() {
+  var links = localStorage.getItem("links");
+  if (links) {
+    document.getElementById("links").value = links;
+  }
+}
+
+// Call readFromLocalStorage() on page load
+window.onload = readFromLocalStorage;
+
+// Call saveToLocalStorage() on textarea blur
+document.getElementById("links").addEventListener("blur", saveToLocalStorage);
+  </script>
+</body>
+</html>
